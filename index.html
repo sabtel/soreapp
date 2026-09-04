@@ -26,7 +26,6 @@
             --bg-light: #f9fafb;
             --white: #ffffff;
             --shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-            --shadow-hover: 0 30px 80px rgba(102, 126, 234, 0.4);
         }
 
         body {
@@ -41,7 +40,6 @@
             overflow-x: hidden;
         }
 
-        /* Animated Background */
         body::before {
             content: '';
             position: fixed;
@@ -63,7 +61,6 @@
             66% { transform: translate(-20px, 20px) scale(0.95); }
         }
 
-        /* Floating particles */
         .particle {
             position: fixed;
             border-radius: 50%;
@@ -100,7 +97,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Header */
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 40px 30px 60px;
@@ -171,7 +167,6 @@
             z-index: 2;
         }
 
-        /* Content */
         .content {
             padding: 30px;
             margin-top: -30px;
@@ -179,7 +174,6 @@
             z-index: 3;
         }
 
-        /* Stats */
         .stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -223,7 +217,6 @@
             display: block;
         }
 
-        /* Features */
         .features {
             margin-bottom: 25px;
         }
@@ -288,7 +281,6 @@
             font-size: 16px;
         }
 
-        /* Download Section */
         .download-section {
             background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
             border-radius: 20px;
@@ -394,7 +386,6 @@
             z-index: 1;
         }
 
-        /* Info badges */
         .info-badges {
             display: flex;
             justify-content: center;
@@ -417,7 +408,6 @@
             font-size: 12px;
         }
 
-        /* Footer */
         .footer {
             text-align: center;
             padding: 20px;
@@ -432,7 +422,6 @@
             font-weight: 600;
         }
 
-        /* Loading overlay */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -484,7 +473,6 @@
             color: var(--text-light);
         }
 
-        /* Toast notification */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -510,7 +498,6 @@
             opacity: 1;
         }
 
-        /* Responsive */
         @media (max-width: 480px) {
             .container {
                 border-radius: 24px;
@@ -533,7 +520,6 @@
             }
         }
 
-        /* Version badge in header */
         .version-badge {
             display: inline-block;
             background: rgba(255, 255, 255, 0.25);
@@ -547,6 +533,29 @@
             position: relative;
             z-index: 2;
             border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            max-width: 280px;
+            height: 6px;
+            background: rgba(102, 126, 234, 0.2);
+            border-radius: 10px;
+            margin: 15px auto 0;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar.active {
+            display: block;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.3s ease;
         }
     </style>
 </head>
@@ -651,10 +660,14 @@
                 <div class="download-title">🚀 آماده دانلود هستید؟</div>
                 <p class="download-subtitle">همین حالا آخرین نسخه را دانلود کنید</p>
                 
-                <button class="download-btn" id="downloadBtn" onclick="startDownload()">
+                <a href="static/base.apk" download="wound-assessment-app.apk" class="download-btn" id="downloadBtn">
                     <i class="fas fa-cloud-download-alt"></i>
                     <span>دانلود رایگان اپلیکیشن</span>
-                </button>
+                </a>
+
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
 
                 <div class="info-badges">
                     <span class="badge">
@@ -680,45 +693,35 @@
     </div>
 
     <script>
-        // تنظیمات دانلود - لینک مخزن خود را اینجا قرار دهید
-        const APK_URL = 'https://github.com/sabtel/soreapp/blob/53fccae576780d8d0ff6425ddcca11cc5884bc77/base.apk';
-        const FILE_NAME = 'wound-assessment-app.apk';
-
-        // تابع دانلود
-        function startDownload() {
-            const loadingOverlay = document.getElementById('loadingOverlay');
-            const downloadBtn = document.getElementById('downloadBtn');
+        // نمایش نوتیفیکیشن هنگام کلیک روی دکمه دانلود
+        document.getElementById('downloadBtn').addEventListener('click', function(e) {
+            const progressBar = document.getElementById('progressBar');
+            const progressFill = document.getElementById('progressFill');
             
-            // نمایش لودینگ
-            loadingOverlay.classList.add('active');
-            downloadBtn.style.pointerEvents = 'none';
-            downloadBtn.style.opacity = '0.7';
+            // نمایش نوار پیشرفت
+            progressBar.classList.add('active');
+            
+            // شبیه‌سازی پیشرفت دانلود
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    showToast('✅ دانلود با موفقیت شروع شد!');
+                    setTimeout(() => {
+                        progressBar.classList.remove('active');
+                        progressFill.style.width = '0%';
+                    }, 2000);
+                }
+                progressFill.style.width = progress + '%';
+            }, 200);
 
-            // شبیه‌سازی آماده‌سازی
+            // نمایش پیام فوری
             setTimeout(() => {
-                loadingOverlay.classList.remove('active');
-                downloadBtn.style.pointerEvents = 'auto';
-                downloadBtn.style.opacity = '1';
-                
-                // شروع دانلود واقعی
-                triggerDownload();
-                
-                // نمایش نوتیفیکیشن
-                showToast('✅ دانلود با موفقیت شروع شد!');
-            }, 1500);
-        }
-
-        // تابع اصلی دانلود فایل
-        function triggerDownload() {
-            const link = document.createElement('a');
-            link.href = APK_URL;
-            link.download = FILE_NAME;
-            link.target = '_blank';
-            link.rel = 'noopener noreferrer';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+                showToast('📥 در حال دانلود از static/base.apk...');
+            }, 300);
+        });
 
         // تابع نمایش نوتیفیکیشن
         function showToast(message) {
@@ -732,16 +735,14 @@
             }, 3000);
         }
 
-        // تشخیص دستگاه
+        // تشخیص دستگاه کاربر
         function detectDevice() {
             const userAgent = navigator.userAgent || navigator.vendor || window.opera;
             
             if (/android/i.test(userAgent)) {
-                console.log('دستگاه اندروید شناسایی شد');
                 return 'android';
             }
             if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                console.log('دستگاه iOS شناسایی شد');
                 return 'ios';
             }
             return 'desktop';
@@ -751,12 +752,6 @@
         window.addEventListener('load', () => {
             const device = detectDevice();
             console.log(`خوش آمدید! دستگاه شما: ${device}`);
-        });
-
-        // جلوگیری از کلیک راست روی دکمه دانلود
-        document.getElementById('downloadBtn').addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-            showToast('💡 روی دکمه کلیک کنید تا دانلود شروع شود');
         });
     </script>
 </body>
