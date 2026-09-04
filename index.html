@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="دانلود اپلیکیشن کارشناسی زخم - ابزار حرفه‌ای برای ارزیابی و مدیریت زخم">
+    <title>اپلیکیشن کارشناسی زخم | دانلود</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5568d3;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --success: #10b981;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --white: #ffffff;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            --shadow-hover: 0 30px 80px rgba(102, 126, 234, 0.4);
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(240, 147, 251, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(102, 126, 234, 0.3) 0%, transparent 50%);
+            animation: backgroundMove 15s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes backgroundMove {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.95); }
+        }
+
+        /* Floating particles */
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+            animation: float 20s infinite;
+        }
+
+        .particle:nth-child(1) { width: 80px; height: 80px; top: 10%; left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 60px; height: 60px; top: 70%; left: 80%; animation-delay: 3s; }
+        .particle:nth-child(3) { width: 100px; height: 100px; top: 50%; left: 50%; animation-delay: 6s; }
+        .particle:nth-child(4) { width: 50px; height: 50px; top: 30%; left: 70%; animation-delay: 9s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.5; }
+            50% { transform: translateY(-100px) translateX(50px) rotate(180deg); opacity: 1; }
+        }
+
+        .container {
+            max-width: 480px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 30px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .app-icon {
+            width: 110px;
+            height: 110px;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+            border-radius: 28px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .app-icon i {
+            font-size: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .app-name {
+            color: white;
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .app-tagline {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 14px;
+            font-weight: 400;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Content */
+        .content {
+            padding: 30px;
+            margin-top: -30px;
+            position: relative;
+            z-index: 3;
+        }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-item {
+            background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+            border-radius: 16px;
+            padding: 15px 10px;
+            text-align: center;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.15);
+            border-color: var(--primary);
+        }
+
+        .stat-item i {
+            font-size: 20px;
+            color: var(--primary);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .stat-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 2px;
+            display: block;
+        }
+
+        /* Features */
+        .features {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title i {
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 100%);
+            border-radius: 14px;
+            font-size: 14px;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .feature-item:hover {
+            transform: translateX(-5px);
+            background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.15);
+            border-color: var(--primary);
+        }
+
+        .feature-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .feature-icon i {
+            color: white;
+            font-size: 16px;
+        }
+
+        /* Download Section */
+        .download-section {
+            background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+            border-radius: 20px;
+            padding: 25px 20px;
+            text-align: center;
+            border: 2px dashed rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+            background-size: 200% 100%;
+            animation: gradientMove 3s linear infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .download-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .download-subtitle {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            max-width: 280px;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .download-btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        .download-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .download-btn i {
+            font-size: 18px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .download-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Info badges */
+        .info-badges {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .badge i {
+            color: var(--success);
+            font-size: 12px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 11px;
+            color: var(--text-light);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(102, 126, 234, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 16px;
+            color: var(--text-dark);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .loading-subtext {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 24px;
+            }
+            .header {
+                padding: 30px 20px 50px;
+            }
+            .app-icon {
+                width: 90px;
+                height: 90px;
+            }
+            .app-icon i {
+                font-size: 40px;
+            }
+            .app-name {
+                font-size: 22px;
+            }
+            .content {
+                padding: 20px;
+            }
+        }
+
+        /* Version badge in header */
+        .version-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 10px;
+            position: relative;
+            z-index: 2;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Particles -->
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div class="loading-text">در حال آماده‌سازی دانلود...</div>
+        <div class="loading-subtext">لطفاً صبر کنید</div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastText">دانلود شروع شد!</span>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="app-icon">
+                <i class="fas fa-notes-medical"></i>
+            </div>
+            <h1 class="app-name">اپلیکیشن کارشناسی زخم</h1>
+            <p class="app-tagline">ابزار حرفه‌ای ارزیابی و مدیریت زخم</p>
+            <div class="version-badge">
+                <i class="fas fa-circle" style="font-size: 6px; vertical-align: middle;"></i>
+                نسخه ۲.۱.۰ | جدیدترین
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Stats -->
+            <div class="stats">
+                <div class="stat-item">
+                    <i class="fas fa-download"></i>
+                    <span class="stat-value">۱۰K+</span>
+                    <span class="stat-label">دانلود</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-star"></i>
+                    <span class="stat-value">۴.۸</span>
+                    <span class="stat-label">امتیاز</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-database"></i>
+                    <span class="stat-value">۲۵ MB</span>
+                    <span class="stat-label">حجم</span>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="features">
+                <h2 class="section-title">
+                    <i class="fas fa-sparkles"></i>
+                    ویژگی‌های برنامه
+                </h2>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-stethoscope"></i>
+                        </div>
+                        <span>ارزیابی دقیق زخم</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-file-medical-alt"></i>
+                        </div>
+                        <span>گزارش‌گیری حرفه‌ای</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-hand-pointer"></i>
+                        </div>
+                        <span>رابط کاربری آسان</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <span>پشتیبانی ۲۴ ساعته</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <span>امنیت بالا</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Download Section -->
+            <div class="download-section">
+                <div class="download-title">🚀 آماده دانلود هستید؟</div>
+                <p class="download-subtitle">همین حالا آخرین نسخه را دانلود کنید</p>
+                
+                <button class="download-btn" id="downloadBtn" onclick="startDownload()">
+                    <i class="fas fa-cloud-download-alt"></i>
+                    <span>دانلود رایگان اپلیکیشن</span>
+                </button>
+
+                <div class="info-badges">
+                    <span class="badge">
+                        <i class="fas fa-shield-alt"></i>
+                        امن و تست شده
+                    </span>
+                    <span class="badge">
+                        <i class="fas fa-bolt"></i>
+                        نصب سریع
+                    </span>
+                    <span class="badge">
+                        <i class="fas fa-sync-alt"></i>
+                        آپدیت خودکار
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>© ۱۴۰۳ تمامی حقوق محفوظ است | طراحی شده با ❤️</p>
+        </div>
+    </div>
+
+    <script>
+        // تنظیمات دانلود - لینک مخزن خود را اینجا قرار دهید
+        const APK_URL = 'https://github.com/your-repo/wound-app/releases/latest/download/app.apk';
+        const FILE_NAME = 'wound-assessment-app.apk';
+
+        // تابع دانلود
+        function startDownload() {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const downloadBtn = document.getElementById('downloadBtn');
+            
+            // نمایش لودینگ
+            loadingOverlay.classList.add('active');
+            downloadBtn.style.pointerEvents = 'none';
+            downloadBtn.style.opacity = '0.7';
+
+            // شبیه‌سازی آماده‌سازی
+            setTimeout(() => {
+                loadingOverlay.classList.remove('active');
+                downloadBtn.style.pointerEvents = 'auto';
+                downloadBtn.style.opacity = '1';
+                
+                // شروع دانلود واقعی
+                triggerDownload();
+                
+                // نمایش نوتیفیکیشن
+                showToast('✅ دانلود با موفقیت شروع شد!');
+            }, 1500);
+        }
+
+        // تابع اصلی دانلود فایل
+        function triggerDownload() {
+            const link = document.createElement('a');
+            link.href = APK_URL;
+            link.download = FILE_NAME;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // تابع نمایش نوتیفیکیشن
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toastText');
+            toastText.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // تشخیص دستگاه
+        function detectDevice() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            
+            if (/android/i.test(userAgent)) {
+                console.log('دستگاه اندروید شناسایی شد');
+                return 'android';
+            }
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                console.log('دستگاه iOS شناسایی شد');
+                return 'ios';
+            }
+            return 'desktop';
+        }
+
+        // لاگ هنگام لود صفحه
+        window.addEventListener('load', () => {
+            const device = detectDevice();
+            console.log(`خوش آمدید! دستگاه شما: ${device}`);
+        });
+
+        // جلوگیری از کلیک راست روی دکمه دانلود
+        document.getElementById('downloadBtn').addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            showToast('💡 روی دکمه کلیک کنید تا دانلود شروع شود');
+        });
+    </script>
+</body>
+</html>
